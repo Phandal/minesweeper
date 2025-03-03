@@ -4,24 +4,27 @@
  */
 export class Space {
   /** @type {boolean} */
-  #active;
+  active;
 
   /**
    * Constructs a new Space
    */
   constructor() {
-    this.#active = false;
+    this.active = false;
   }
 
+  /** @type {Cell['isActive']} */
   isActive() {
-    return this.#active;
+    return this.active;
   }
 
+  /** @type {Cell['activate']} */
   activate() {
-    this.#active = true;
+    this.active = true;
     return false;
   }
 
+  /** @type {Cell['getState']} */
   getState() {
     return this.isActive() ? 'space' : 'inactive';
   }
@@ -33,24 +36,27 @@ export class Space {
  */
 export class Bomb {
   /** @type {boolean} */
-  #active;
+  active;
 
   /**
    * Constructs a new Bomb
    */
   constructor() {
-    this.#active = false;
+    this.active = false;
   }
 
+  /** @type {Cell['isActive']} */
   isActive() {
-    return this.#active;
+    return this.active;
   }
 
+  /** @type {Cell['activate']} */
   activate() {
-    this.#active = true;
+    this.active = true;
     return true;
   }
 
+  /** @type {Cell['getState']} */
   getState() {
     return this.isActive() ? 'bomb' : 'inactive';
   }
@@ -60,11 +66,6 @@ export class Bomb {
  * Create Cells based on a set of options
  */
 export class CellFactory {
-  /**
-   * Construct a new CellFactory
-   */
-  constructor() { }
-
   /**
    * @param {CellFactoryCreateOptions} o
    */

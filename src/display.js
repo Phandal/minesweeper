@@ -3,19 +3,12 @@
  * @implements {Display}
  */
 export class ConsoleDisplay {
-  /**
-   * Constructs a new ConsoleDisplay
-   */
-  constructor() { }
-
-  /**
-   * @param {Cell[][]} cells
-   */
+  /** @type {Display['draw']} */
   draw(cells) {
     for (const row of cells) {
       let rowOutput = '';
       for (const cell of row) {
-        const state = cell.getState()
+        const state = cell.getState();
         switch (state) {
           case 'inactive':
             rowOutput += '▓';
@@ -24,7 +17,7 @@ export class ConsoleDisplay {
             rowOutput += '░';
             break;
           case 'bomb':
-            rowOutput += 'B'
+            rowOutput += 'B';
         }
       }
       console.log(rowOutput);

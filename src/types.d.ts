@@ -1,17 +1,10 @@
-type GameOptions = {
-  board: Board,
-  display: Display,
-};
-
 type BoardOptions = {
-  width: number,
-  height: number,
-  bombs: number,
-  cellFactory: CellFactory,
+  difficulty: Difficulty;
+  cellFactory: CellFactory;
 };
 
 type CellFactoryCreateOptions = {
-  kind: 'space' | 'bomb',
+  kind: 'space' | 'bomb';
 };
 
 type CellState = 'space' | 'bomb' | 'inactive';
@@ -19,28 +12,25 @@ type CellState = 'space' | 'bomb' | 'inactive';
 type Coordinate = {
   x: number;
   y: number;
-}
+};
 
-interface Game {
-  /**
-   * Explains whether the game is running or not
-   * @returns {Boolean}
-   */
-  isRunning(): boolean;
+type Difficulty = {
+  width: number;
+  height: number;
+  bombs: number;
+};
 
-  /**
-   * Update the game board and all entities
-   * @param {Coordinate} coordinate
-   * @returns {void}
-  */
-  tick(coordinate: Coordinate): void;
+type DifficultyMode = 'easy' | 'medium' | 'hard' | 'extreme';
 
-  /**
-   * Draw the game board on the display
-   * @returns {void}
-   */
-  draw(): void;
-}
+type DifficultyFactoryCreateOptions = {
+  mode: DifficultyMode;
+};
+
+type GameOptions = {
+  board: Board;
+  display: Display;
+  input: Input;
+};
 
 interface Board {
   /**
@@ -48,31 +38,19 @@ interface Board {
    * @param {Coordinate} coordinate
    * @returns {Cell}
    */
-  getCell(coordinate: Coordinate): Cell
+  getCell(coordinate: Coordinate): Cell;
 
   /**
    * Get all the cells on the board as a 2d list
    * @returns {Cell[][]}
    */
   getCells(): Cell[][];
-}
 
-interface Display {
   /**
-   * Draw the cells on the display
-   * @param {Cell[][]} cells
-   * @returns void
+   * Determins if a coordinate is on the board or not.
+   * @param {Coordinate} coordinate
    */
-  draw(cells: Cell[][]): void
-}
-
-interface CellFactory {
-  /**
-   * Creates a new Cell
-   * @param {CellFactoryCreateOptions} o
-   * @returns {Cell}
-   */
-  create(o: CellFactoryCreateOptions): Cell
+  isCoordinateOnBoard(coordinate): boolean;
 }
 
 interface Cell {
@@ -92,6 +70,58 @@ interface Cell {
    * Get the state that the  cell is in
    * @returns {CellState}
    */
-  getState(): CellState
+  getState(): CellState;
 }
 
+interface CellFactory {
+  /**
+   * Creates a new Cell
+   * @param {CellFactoryCreateOptions} o
+   * @returns {Cell}
+   */
+  create(o: CellFactoryCreateOptions): Cell;
+}
+
+interface Display {
+  /**
+   * Draw the cells on the display
+   * @param {Cell[][]} cells
+   * @returns void
+   */
+  draw(cells: Cell[][]): void;
+}
+
+interface Game {
+  /**
+   * Explains whether the game is running or not
+   * @returns {Boolean}
+   */
+  isRunning(): boolean;
+
+  /**
+   * Update the game board and all entities
+   * @param {Coordinate} coordinate
+   * @returns {void}
+   */
+  tick(coordinate: Coordinate): void;
+
+  /**
+   * Draw the game board on the display
+   * @returns {void}
+   */
+  draw(): void;
+
+  /**
+   * Get input from the display
+   * @returns {Promise<Coordinate>}
+   */
+  getCoordinate(): Promise<Coordinate>;
+}
+
+interface Input {
+  /**
+   * Gets a coordinate from the user and maps it to board space
+   * @returns {Coordinate}
+   */
+  getCoordinate(): Promise<Coordinate>;
+}
